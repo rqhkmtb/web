@@ -1583,15 +1583,7 @@ function extendSemesterOptions(selectEl, max = SEMESTER_MAX) {
     <label>Jenjang:</label><br>
     <select id="inputJenjang" style="width:90%; margin-bottom:10px;">
   <option value=""></option>
-  <option value="A1">1 SD</option>
-  <option value="A2">2 SD</option>
-  <option value="A3">3 SD</option>
-  <option value="A4">4 SD</option>
-  <option value="A5">5 SD</option>
-  <option value="A6">6 SD</option>
-  <option value="A7">1 SMP</option>
-  <option value="A8">2 SMP</option>
-  <option value="A9">3 SMP</option>
+  <option value="A1">ONLINE</option>
   </select>
 
     <div style="margin-top:10px; display:flex; justify-content:space-between; gap:8px;">
@@ -2242,12 +2234,7 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
     </style>
 
     <!-- Bullet list cakep -->
-    <ul class="juz-list"><li>Semester 1: <strong>8</strong> Juz</li>
-      <li>Semester 2: <strong>5</strong> Juz</li>
-      <li>Semester 3: <strong>5</strong> Juz</li>
-      <li>Semester 4: <strong>5</strong> Juz</li>
-      <li>Semester 5: <strong>5</strong> Juz</li>
-      <li>Semester 6: <strong>2</strong> Juz</li></ul>
+    <ul class="juz-list"><li>Keterangan: <strong>Setiap level adalah 1 juz</strong></li></ul>
 
     <hr style="border:none; border-top:1px solid #eee; margin:8px 0 12px;">
 
@@ -2327,12 +2314,7 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
       #murRangeOverlay .juz-list strong{ font-variant-numeric:tabular-nums; }
     </style>
 
-    <ul class="juz-list"><li>Semester 1: <strong>8</strong> Juz</li>
-      <li>Semester 2: <strong>5</strong> Juz</li>
-      <li>Semester 3: <strong>5</strong> Juz</li>
-      <li>Semester 4: <strong>5</strong> Juz</li>
-      <li>Semester 5: <strong>5</strong> Juz</li>
-      <li>Semester 6: <strong>2</strong> Juz</li></ul>
+    <ul class="juz-list"><li>Keterangan: <strong>Setiap level adalah 1 juz</strong></li></ul>
 
     <hr style="border:none; border-top:1px solid #eee; margin:8px 0 12px;">
 
@@ -2377,11 +2359,9 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
 
   // === Fungsi atur dropdown kelas ===
 function aturDropdownKelas(user) {
-  const semuaKelas = [  "kelas_01","kelas_012526","kelas_02"];
+  const semuaKelas = [  "kelas_012526"];
 
-  const namaKelasCustom = {  kelas_01: "Ust. Dicky Miswardi, B.A.",
-  kelas_012526: "Ust. Moro, B.A.",
-  kelas_02: "Ust. Obie Zarobie, B.A."};
+  const namaKelasCustom = {  kelas_012526: "Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha"};
 
   kelasSelect.innerHTML = "";
 
@@ -2561,7 +2541,7 @@ async function loadSantriData() {
   overlay.style.display = "flex";
 
   // ===== NEW: Konfigurasi & util jenjang (future-proof) =====
-  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 9); // ubah ke 100 / 300 / 1000 sesuai kebutuhan
+  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 1); // ubah ke 100 / 300 / 1000 sesuai kebutuhan
 
   const parseJenjang = (v) => {
     const m = /^A(\d+)$/.exec(String(v || "").trim());
@@ -2867,15 +2847,7 @@ async function loadSantriData() {
           <td class="col-nama">${santri.nama ?? ""}${subTanggal}</td>
           <td>
   <select class="jenjang">
-    <option value="A1" ${jenNow === 'A1' ? 'selected' : ''}>1 SD</option>
-    <option value="A2" ${jenNow === 'A2' ? 'selected' : ''}>2 SD</option>
-    <option value="A3" ${jenNow === 'A3' ? 'selected' : ''}>3 SD</option>
-    <option value="A4" ${jenNow === 'A4' ? 'selected' : ''}>4 SD</option>
-    <option value="A5" ${jenNow === 'A5' ? 'selected' : ''}>5 SD</option>
-    <option value="A6" ${jenNow === 'A6' ? 'selected' : ''}>6 SD</option>
-    <option value="A7" ${jenNow === 'A7' ? 'selected' : ''}>1 SMP</option>
-    <option value="A8" ${jenNow === 'A8' ? 'selected' : ''}>2 SMP</option>
-    <option value="A9" ${jenNow === 'A9' ? 'selected' : ''}>3 SMP</option>
+    <option value="A1" ${jenNow === 'A1' ? 'selected' : ''}>ONLINE</option>
   </select>
 </td>
           <td>
@@ -2886,6 +2858,30 @@ async function loadSantriData() {
     <option value="4" ${String(semNow) === '4' ? 'selected' : ''}>4</option>
     <option value="5" ${String(semNow) === '5' ? 'selected' : ''}>5</option>
     <option value="6" ${String(semNow) === '6' ? 'selected' : ''}>6</option>
+    <option value="7" ${String(semNow) === '7' ? 'selected' : ''}>7</option>
+    <option value="8" ${String(semNow) === '8' ? 'selected' : ''}>8</option>
+    <option value="9" ${String(semNow) === '9' ? 'selected' : ''}>9</option>
+    <option value="10" ${String(semNow) === '10' ? 'selected' : ''}>10</option>
+    <option value="11" ${String(semNow) === '11' ? 'selected' : ''}>11</option>
+    <option value="12" ${String(semNow) === '12' ? 'selected' : ''}>12</option>
+    <option value="13" ${String(semNow) === '13' ? 'selected' : ''}>13</option>
+    <option value="14" ${String(semNow) === '14' ? 'selected' : ''}>14</option>
+    <option value="15" ${String(semNow) === '15' ? 'selected' : ''}>15</option>
+    <option value="16" ${String(semNow) === '16' ? 'selected' : ''}>16</option>
+    <option value="17" ${String(semNow) === '17' ? 'selected' : ''}>17</option>
+    <option value="18" ${String(semNow) === '18' ? 'selected' : ''}>18</option>
+    <option value="19" ${String(semNow) === '19' ? 'selected' : ''}>19</option>
+    <option value="20" ${String(semNow) === '20' ? 'selected' : ''}>20</option>
+    <option value="21" ${String(semNow) === '21' ? 'selected' : ''}>21</option>
+    <option value="22" ${String(semNow) === '22' ? 'selected' : ''}>22</option>
+    <option value="23" ${String(semNow) === '23' ? 'selected' : ''}>23</option>
+    <option value="24" ${String(semNow) === '24' ? 'selected' : ''}>24</option>
+    <option value="25" ${String(semNow) === '25' ? 'selected' : ''}>25</option>
+    <option value="26" ${String(semNow) === '26' ? 'selected' : ''}>26</option>
+    <option value="27" ${String(semNow) === '27' ? 'selected' : ''}>27</option>
+    <option value="28" ${String(semNow) === '28' ? 'selected' : ''}>28</option>
+    <option value="29" ${String(semNow) === '29' ? 'selected' : ''}>29</option>
+    <option value="30" ${String(semNow) === '30' ? 'selected' : ''}>30</option>
   </select>
           </td>
           <td>
@@ -3571,9 +3567,7 @@ function jenjangLabel(code) {
   // === Helper Kelas/Kelompok ===
   function buildKelasKelompokLine(kelas, kelasEl) {
     const kelasNum = (String(kelas||'').match(/(\d+)/)?.[1]) || (kelas || '-');
-    const custom = window.namaKelasCustom || window.NAMA_KELAS_CUSTOM || {  kelas_01: "Kelompok Ust. Dicky Miswardi, B.A.",
-  kelas_012526: "Kelompok Ust. Moro, B.A.",
-  kelas_02: "Kelompok Ust. Obie Zarobie, B.A."};
+    const custom = window.namaKelasCustom || window.NAMA_KELAS_CUSTOM || {  kelas_012526: "Kelompok Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha"};
     let kelompok = custom[kelas] || "";
     if (!kelompok) {
       const optText = kelasEl?.options?.[kelasEl.selectedIndex]?.text?.trim() || "";
@@ -4490,7 +4484,7 @@ async function pdfAllKelasDownload(){
     const rightX = margin.left + colW + colGap;
 
     doc.setFont('helvetica','normal'); doc.setFontSize(11);
-    doc.text(`Jakarta, ${ttdDate}`, margin.left + totalW, y, { align:'right' });
+    doc.text(`Mataram, ${ttdDate}`, margin.left + totalW, y, { align:'right' });
 
     const headY = y + 8;
     doc.text('Mengetahui,', leftX, headY);
@@ -4849,7 +4843,7 @@ async function pdfAllKelasDownload(){
       const rightX = margin.left + colW + colGap;
 
       doc.setFont('helvetica','normal'); doc.setFontSize(11);
-      doc.text(`Jakarta, ${ttdDate}`, margin.left + totalW, y, { align:'right' });
+      doc.text(`Mataram, ${ttdDate}`, margin.left + totalW, y, { align:'right' });
 
       const headY = y + 8;
       doc.text('Mengetahui,', leftX, headY);
@@ -5124,7 +5118,7 @@ async function pdfAllKelasDownload(){
     return out.length ? out.join(', ') : '-';
   }
   function PDF_percentCapaian(totalJuzNum, semester){
-    const batasSemester = {1: 8, 2: 13, 3: 18, 4: 23, 5: 28, 6: 30};
+    const batasSemester = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30};
     const total = Number(totalJuzNum);
     const sem   = Number(semester);
     if (!Number.isFinite(total)) return 0;
@@ -5438,7 +5432,7 @@ async function hitungTotalAllJuzFromTable() {
     });
 
     // Batas ketuntasan per semester
-    const batasSemester = {1: 8, 2: 13, 3: 18, 4: 23, 5: 28, 6: 30};
+    const batasSemester = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30};
 
     // Update tabel + siapkan data simpan
     const dataToSave = [];
@@ -5603,7 +5597,7 @@ async function hitungTotalAllJuzOtomatis() {
       rekap[key].totalJuz += parseNum(item?.totalJuz);
     });
 
-    const batasSemester = {1: 8, 2: 13, 3: 18, 4: 23, 5: 28, 6: 30};
+    const batasSemester = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30};
 
     rowsArr.forEach(row => {
       const key  = normKey(row.dataset?.key || row.dataset?.nis || row.dataset?.id);
@@ -5967,7 +5961,7 @@ kelasSelect?.addEventListener("change", () => loadSantriData());
     else { s=s.replace(/,/g,""); }
     const n = parseFloat(s); return Number.isFinite(n)?n:0;
   };
-  const BATAS = {1: 8, 2: 13, 3: 18, 4: 23, 5: 28, 6: 30};
+  const BATAS = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30};
   const LS_KEY = k => `murRange:${k}`;
 
   function getSantriTable(){
@@ -6241,7 +6235,7 @@ kelasSelect?.addEventListener("change", () => loadSantriData());
 
 <script>
   // ====== KONFIG (opsional dari window.*) ======
-  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 9);             // 34 default; 0 = tanpa batas atas
+  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 1);             // 34 default; 0 = tanpa batas atas
   const JENJANG_SAFETY_CAP = Number(window.JENJANG_SAFETY_CAP ?? 1000); // darurat bila tanpa batas
 
   // ====== Helper jenjang dinamis ======
