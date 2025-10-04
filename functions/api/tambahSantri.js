@@ -1,7 +1,7 @@
 // functions/api/tambahSantri.js
 // Endpoint: POST /api/tambahSantri
 
-const DEFAULT_REPO   = "dickypagesdev/server";
+const DEFAULT_REPO   = "rqhkmtb/server";
 const DEFAULT_BRANCH = "main";
 
 const enc = new TextEncoder();
