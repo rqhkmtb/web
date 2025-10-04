@@ -9,7 +9,7 @@ const CORS = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-const OWNER_REPO = "dickypagesdev/server";
+const OWNER_REPO = "rqhkmtb/server";
 const BRANCH = "main";
 const DIR = "absensi";
 
