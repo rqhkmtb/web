@@ -2532,9 +2532,9 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
 
   // === Fungsi atur dropdown kelas ===
 function aturDropdownKelas(user) {
-  const semuaKelas = [  "kelas_012526"];
+  const semuaKelas = [  "kelas_0120252026"];
 
-  const namaKelasCustom = {  kelas_012526: "Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha, Dewi Masrufah"};
+  const namaKelasCustom = {  kelas_0120252026: "Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha, Dewi Masrufah"};
 
   kelasSelect.innerHTML = "";
 
@@ -4625,7 +4625,7 @@ document.getElementById('mur-save')?.addEventListener('click', function(){ simpa
   // === Helper Kelas/Kelompok ===
 function buildKelasKelompokLine(kelas, kelasEl) {
   const kelasNum = (String(kelas||'').match(/(\d+)/)?.[1]) || (kelas || '-');
-  const custom = window.namaKelasCustom || window.NAMA_KELAS_CUSTOM || {  kelas_012526: "Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha, Dewi Masrufah"};
+  const custom = window.namaKelasCustom || window.NAMA_KELAS_CUSTOM || {  kelas_0120252026: "Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha, Dewi Masrufah"};
     let kelompok = custom[kelas] || "";
     if (!kelompok) {
       const optText = kelasEl?.options?.[kelasEl.selectedIndex]?.text?.trim() || "";
