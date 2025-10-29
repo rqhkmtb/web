@@ -2763,9 +2763,17 @@ logoutBtn.addEventListener("click", () => {
     statuses: ["hadir","izin","sakit","alpha"],
     perStatus: Number(window.ABS_FLEX_PER_STATUS ?? 1), // default 2 unit per status (hadir1..2, dst)
 	defaultTarget: 1,                                   // default denominator
-    maxTarget: 6,                                       // denominator 1..6
+    maxTarget: 1,                                       // denominator 1..6
     labels: null                                        // {hadir:[...], izin:[...], ...] (opsional)
   };
+
+  // --- Tambahan: helper clone aman & di-expose global ---
+  function safeCloneItems(items){
+    return Array.isArray(items)
+      ? items.map(it => ({ key: String(it.key).toLowerCase(), checked: !!it.checked }))
+      : [];
+  }
+  window.__absflex_safeCloneItems = safeCloneItems;
 
   function buildKeys(perStatus = ABS_FLEX_CFG.perStatus){
     const n = Math.max(1, Math.min(6, perStatus|0 || 2));
@@ -2781,7 +2789,7 @@ logoutBtn.addEventListener("click", () => {
     const Title   = st.charAt(0).toUpperCase() + st.slice(1);
     const idx     = i - 1;
     const per     = ABS_FLEX_CFG.perStatus|0;
-    const sesiAll = ["Tasmi"];
+    const sesiAll = ["Sesi"];
 
     // Legacy: jika tetap 2 sesi, pertahankan Pagi/Sore
     if (per === 2){
@@ -2951,16 +2959,16 @@ logoutBtn.addEventListener("click", () => {
   window.__makePresetAbsensiItems = function(dataAbsensi){
     if (Array.isArray(dataAbsensi?.absensiItems)){
       const target = Number(dataAbsensi?.absensiTarget) || ABS_FLEX_CFG.defaultTarget;
-      return { preset: dataAbsensi.absensiItems, target };
+      return { preset: safeCloneItems(dataAbsensi.absensiItems), target };
     }
     if (Array.isArray(dataAbsensi?.absensi6)){
       const target = Number(dataAbsensi?.absensiActive) || 6;
       const items = abs6ToItems(dataAbsensi.absensi6, target);
-      return { preset: items, target: Math.max(1, Math.min(6, target)) };
+      return { preset: safeCloneItems(items), target: Math.max(1, Math.min(6, target)) };
     }
     if (typeof dataAbsensi?.absensi === "string" && dataAbsensi.absensi){
       const items = legacyToItems(dataAbsensi.absensi, ABS_FLEX_CFG.defaultTarget);
-      return { preset: items, target: ABS_FLEX_CFG.defaultTarget };
+      return { preset: safeCloneItems(items), target: ABS_FLEX_CFG.defaultTarget };
     }
     return { preset: null, target: ABS_FLEX_CFG.defaultTarget };
   };
@@ -3007,126 +3015,15 @@ logoutBtn.addEventListener("click", () => {
 })();
 
 
-// === Load data santri ===
-async function loadDataSantri() {
-  const kelas = kelasSelect.value;
-  if (!kelas) return; // jaga-jaga
 
-  try {
-    const res = await fetch(`/api/getSantri?kelas=${kelas}`);
-    if (!res.ok) throw new Error("Gagal memuat data santri");
-    const data = await res.json();
-    console.log("Data santri:", data);
-    // TODO: render ke tabel (render sebenarnya dilakukan di loadSantriData)
-  } catch (err) {
-    console.error(err);
-    alert("Gagal memuat data santri / absensi!");
-  }
-}
-
-// === Saat halaman dibuka ===
-window.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const resSurah = await fetch("/api/getAyat");
-    surahList = await resSurah.json();
-
-    const resPages = await fetch("/api/getPagesMap");
-    pagesMap = await resPages.json();
-  } catch (err) {
-    console.error("Gagal load surah/pagesMap:", err);
-  }
-
-  // pastikan modal absensi tersedia
-  ensureAbsensiModal();
-
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  if (isLoggedIn) {
-    const storedKelas = JSON.parse(localStorage.getItem("kelasDiizinkan") || "[]");
-    const storedUsername = localStorage.getItem("username") || "";
-    namaUserSpan.textContent = storedUsername;
-
-    aturDropdownKelas({ kelas: storedKelas });
-    showDashboard();
-    loadDataSantri();
-  }
-});
-
-// === Event ganti kelas ===
-kelasSelect.addEventListener("change", () => {
-  try { localStorage.setItem(KELAS_KEY, kelasSelect.value); } catch {}
-  loadDataSantri();
-});
-
-// === Header total juz click ===
-totalAllJuzHeader.addEventListener("click", bukaOverlayTotalAllJuz);
-
-function showDashboard() {
-  loginCard.style.display = "none";
-  dashboardCard.style.display = "block";
-
-  const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD
-  if (tanggalFilterAkhir) tanggalFilterAkhir.max = today;
-
-  const savedTanggalAkhirFilter = localStorage.getItem("tanggalFilterAkhirTerakhir") || "";
-  if (tanggalFilterAkhir) {
-    tanggalFilterAkhir.value = savedTanggalAkhirFilter;
-    tanggalFilterAkhir.addEventListener("change", () => {
-      localStorage.setItem("tanggalFilterAkhirTerakhir", tanggalFilterAkhir.value);
-      loadSantriData();
-    });
-  }
-
-  if (tanggalInput)   tanggalInput.max = today;
-  if (startDateInput) startDateInput.max = today;
-  if (endDateInput)   endDateInput.max = today;
-
-  const savedTanggal = localStorage.getItem("tanggalTerakhir");
-  const savedEnd     = localStorage.getItem("endDateTerakhir");
-
-  if (tanggalInput) {
-    tanggalInput.value = savedTanggal || today;
-    tanggalInput.addEventListener("change", () => {
-      localStorage.setItem("tanggalTerakhir", tanggalInput.value);
-      if (tanggalFilterAkhir) {
-        tanggalFilterAkhir.value = "";
-        localStorage.removeItem("tanggalFilterAkhirTerakhir");
-      }
-      loadSantriData();
-    });
-  }
-
-  if (endDateInput) {
-    endDateInput.value = savedEnd || today;
-    endDateInput.addEventListener("change", () => {
-      localStorage.setItem("endDateTerakhir", endDateInput.value);
-      loadSantriData();
-    });
-  }
-
-  loadSantriData();
-}
-
-logoutBtn.addEventListener("click", () => {
-  overlay.style.display = "flex";
-  setTimeout(() => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("username");
-    loginCard.style.display = "block";
-    dashboardCard.style.display = "none";
-    overlay.style.display = "none";
-  }, 500);
-});
-
-// ============================
-// A. LOAD SANTRI DATA
-// ============================	
+// === Load Santri Data ===
 async function loadSantriData() {
   const kelas   = kelasSelect.value;
   const tanggal = tanggalInput.value; // tanggal awal (kolom pertama)
   overlay.style.display = "flex";
 
   // ===== util jenjang (tetap) =====
-  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 1);
+  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 32);
 
   const parseJenjang = (v) => {
     const m = /^A(\d+)$/.exec(String(v || "").trim());
@@ -3205,6 +3102,7 @@ async function loadSantriData() {
       document.getElementById("save-btn-modal"),
       document.getElementById("save-btn"),
       document.getElementById("mur-save"),
+      document.getElementById("btnHitungTotalJuz"),
       document.querySelector("button[onclick='bukaModalSantri()']"),
       document.getElementById("btnHapusSantri"),
       document.getElementById("btnPindahKelas"),
@@ -3561,7 +3459,38 @@ async function loadSantriData() {
           <td class="col-nama">${santri.nama ?? ""}${subTanggal}</td>
           <td>
             <select class="jenjang">
-    <option value="A1" ${jenNow === 'A1' ? 'selected' : ''}>ONLINE</option>
+    <option value="A1" ${jenNow === 'A1' ? 'selected' : ''}>ILA</option>
+    <option value="A2" ${jenNow === 'A2' ? 'selected' : ''}>ILB</option>
+    <option value="A3" ${jenNow === 'A3' ? 'selected' : ''}>ILC</option>
+    <option value="A4" ${jenNow === 'A4' ? 'selected' : ''}>ILD</option>
+    <option value="A5" ${jenNow === 'A5' ? 'selected' : ''}>1A IM</option>
+    <option value="A6" ${jenNow === 'A6' ? 'selected' : ''}>1B IM</option>
+    <option value="A7" ${jenNow === 'A7' ? 'selected' : ''}>1C IM</option>
+    <option value="A8" ${jenNow === 'A8' ? 'selected' : ''}>1D IM</option>
+    <option value="A9" ${jenNow === 'A9' ? 'selected' : ''}>1E IM</option>
+    <option value="A10" ${jenNow === 'A10' ? 'selected' : ''}>1F IM</option>
+    <option value="A11" ${jenNow === 'A11' ? 'selected' : ''}>1G IM</option>
+    <option value="A12" ${jenNow === 'A12' ? 'selected' : ''}>1H IM</option>
+    <option value="A13" ${jenNow === 'A13' ? 'selected' : ''}>1I IM</option>
+    <option value="A14" ${jenNow === 'A14' ? 'selected' : ''}>1J IM</option>
+    <option value="A15" ${jenNow === 'A15' ? 'selected' : ''}>2A IM</option>
+    <option value="A16" ${jenNow === 'A16' ? 'selected' : ''}>2B IM</option>
+    <option value="A17" ${jenNow === 'A17' ? 'selected' : ''}>2C IM</option>
+    <option value="A18" ${jenNow === 'A18' ? 'selected' : ''}>2D IM</option>
+    <option value="A19" ${jenNow === 'A19' ? 'selected' : ''}>2E IM</option>
+    <option value="A20" ${jenNow === 'A20' ? 'selected' : ''}>2F IM</option>
+    <option value="A21" ${jenNow === 'A21' ? 'selected' : ''}>2G IM</option>
+    <option value="A22" ${jenNow === 'A22' ? 'selected' : ''}>2H IM</option>
+    <option value="A23" ${jenNow === 'A23' ? 'selected' : ''}>2I IM</option>
+    <option value="A24" ${jenNow === 'A24' ? 'selected' : ''}>3A IM</option>
+    <option value="A25" ${jenNow === 'A25' ? 'selected' : ''}>3B IM</option>
+    <option value="A26" ${jenNow === 'A26' ? 'selected' : ''}>3C IM</option>
+    <option value="A27" ${jenNow === 'A27' ? 'selected' : ''}>3D IM</option>
+    <option value="A28" ${jenNow === 'A28' ? 'selected' : ''}>3E IM</option>
+    <option value="A29" ${jenNow === 'A29' ? 'selected' : ''}>3F IM</option>
+    <option value="A30" ${jenNow === 'A30' ? 'selected' : ''}>3G IM</option>
+    <option value="A31" ${jenNow === 'A31' ? 'selected' : ''}>3H IM</option>
+    <option value="A32" ${jenNow === 'A32' ? 'selected' : ''}>3I IM</option>
   </select>
           </td>
           <td>
@@ -3572,30 +3501,6 @@ async function loadSantriData() {
     <option value="4" ${String(semNow) === '4' ? 'selected' : ''}>4</option>
     <option value="5" ${String(semNow) === '5' ? 'selected' : ''}>5</option>
     <option value="6" ${String(semNow) === '6' ? 'selected' : ''}>6</option>
-    <option value="7" ${String(semNow) === '7' ? 'selected' : ''}>7</option>
-    <option value="8" ${String(semNow) === '8' ? 'selected' : ''}>8</option>
-    <option value="9" ${String(semNow) === '9' ? 'selected' : ''}>9</option>
-    <option value="10" ${String(semNow) === '10' ? 'selected' : ''}>10</option>
-    <option value="11" ${String(semNow) === '11' ? 'selected' : ''}>11</option>
-    <option value="12" ${String(semNow) === '12' ? 'selected' : ''}>12</option>
-    <option value="13" ${String(semNow) === '13' ? 'selected' : ''}>13</option>
-    <option value="14" ${String(semNow) === '14' ? 'selected' : ''}>14</option>
-    <option value="15" ${String(semNow) === '15' ? 'selected' : ''}>15</option>
-    <option value="16" ${String(semNow) === '16' ? 'selected' : ''}>16</option>
-    <option value="17" ${String(semNow) === '17' ? 'selected' : ''}>17</option>
-    <option value="18" ${String(semNow) === '18' ? 'selected' : ''}>18</option>
-    <option value="19" ${String(semNow) === '19' ? 'selected' : ''}>19</option>
-    <option value="20" ${String(semNow) === '20' ? 'selected' : ''}>20</option>
-    <option value="21" ${String(semNow) === '21' ? 'selected' : ''}>21</option>
-    <option value="22" ${String(semNow) === '22' ? 'selected' : ''}>22</option>
-    <option value="23" ${String(semNow) === '23' ? 'selected' : ''}>23</option>
-    <option value="24" ${String(semNow) === '24' ? 'selected' : ''}>24</option>
-    <option value="25" ${String(semNow) === '25' ? 'selected' : ''}>25</option>
-    <option value="26" ${String(semNow) === '26' ? 'selected' : ''}>26</option>
-    <option value="27" ${String(semNow) === '27' ? 'selected' : ''}>27</option>
-    <option value="28" ${String(semNow) === '28' ? 'selected' : ''}>28</option>
-    <option value="29" ${String(semNow) === '29' ? 'selected' : ''}>29</option>
-    <option value="30" ${String(semNow) === '30' ? 'selected' : ''}>30</option>
   </select>
           </td>
 
@@ -3823,14 +3728,15 @@ async function loadSantriData() {
           });
         }
 
-        // ABSENSI FLEX (tetap)
+        // ABSENSI FLEX (tetap) — REVISI: clone & listener pada root modal
         (function initAbsensiFlexModalForRow(){
           const cell = row.querySelector(".abs-flex-cell");
           const btn  = cell.querySelector(".btn-absensi-flex");
           const mini = cell.querySelector(".abs-mini");
           const { preset, target } = window.__makePresetAbsensiItems(dataAbsensi || {});
 
-          const itemsInit = Array.isArray(preset) ? preset : [];
+          // ✅ clone saat init cell (anti share antar baris)
+          const itemsInit = window.__absflex_safeCloneItems(preset);
           const comp = computeLocal(itemsInit, target);
           cell._absensiItems   = itemsInit;
           cell._absensiTarget  = comp.tgt;
@@ -3848,17 +3754,27 @@ async function loadSantriData() {
             const content = document.getElementById("absensiModalContent");
             content.innerHTML = "";
 
-            const presetItems = Array.isArray(cell._absensiItems) ? cell._absensiItems : itemsInit;
-            const tgt = Number(cell._absensiTarget) || target;
-            const widget = renderAbsensiFlex(content, { target: tgt, presetItems });
+            // buat root baru utk widget → listener tidak menumpuk
+            const root = document.createElement("div");
+            content.appendChild(root);
 
-            content.addEventListener("change", () => {
-              cell._absensiItems   = widget._absensiItems;
-              cell._absensiTarget  = widget._absensiTarget;
-              cell._absensiChecked = widget._absensiChecked;
-              cell._absensiPercent = widget._absensiPercent;
+            // kirim clone state cell sebagai preset
+            const presetItems = window.__absflex_safeCloneItems(cell._absensiItems);
+            const tgt = Number(cell._absensiTarget) || target;
+            const widget = renderAbsensiFlex(root, { target: tgt, presetItems });
+
+            // pasang listener pada root (bukan content) + simpan balik pakai clone
+            const onRootChange = () => {
+              cell._absensiItems   = window.__absflex_safeCloneItems(widget._absensiItems);
+              cell._absensiTarget  = Number(widget._absensiTarget)  || cell._absensiTarget || 1;
+              cell._absensiChecked = Number(widget._absensiChecked) || 0;
+              cell._absensiPercent = Number(widget._absensiPercent) || 0;
               updateMini();
-            });
+            };
+            root.addEventListener("change", onRootChange);
+
+            // sinkron awal (kalau clamp mengubah)
+            onRootChange();
 
             modal.style.display = "flex";
           });
