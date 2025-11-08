@@ -470,8 +470,8 @@ button.lihat-quran-btn:hover::after {
     <div class="login-header">
     <img src="https://raw.githubusercontent.com/rqhkmtb/web/main/rqhk.jpg" alt="Logo Mutaba'ah Tahfizh" />
 	<br>
-   <h1 class="judul">Mutaba'ah Tahfizh
-Ponpes AL IRSYAD</h1>
+   <h1 class="judul">MUTABA'AH TAHFIZ DIGITAL
+	ROUDHOTUL QUR'AN HONGKONG</h1>
     </div>
 
     <!-- Form Login -->
@@ -1340,8 +1340,8 @@ async function buatUserNIS() {
           <tr>
             <th>Nis</th>
             <th>Nama</th>
-			<th>Jenjang</th>
-            <th>Semester</th>
+			<th>Kelas</th>
+            <th>Level</th>
             <th>Presensi</th>
 			<th>SP</th>
             <th>Setor Dari</th>
@@ -1351,7 +1351,7 @@ async function buatUserNIS() {
 			<th>Juz</th>
             <th>Total Juz</th>
             <th>Nilai</th>
-            <th id="totalAllJuzHeader" style="cursor:pointer; text-decoration:underline;">Setting Target</th>
+            <th id="totalAllJuzHeader" style="cursor:pointer; text-decoration:underline;">Setting THMS</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -1729,38 +1729,7 @@ function extendSemesterOptions(selectEl, max = SEMESTER_MAX) {
     <label>Jenjang:</label><br>
     <select id="inputJenjang" style="width:90%; margin-bottom:10px;">
   <option value=""></option>
-  <option value="A1">ILA</option>
-  <option value="A2">ILB</option>
-  <option value="A3">ILC</option>
-  <option value="A4">ILD</option>
-  <option value="A5">1A IM</option>
-  <option value="A6">1B IM</option>
-  <option value="A7">1C IM</option>
-  <option value="A8">1D IM</option>
-  <option value="A9">1E IM</option>
-  <option value="A10">1F IM</option>
-  <option value="A11">1G IM</option>
-  <option value="A12">1H IM</option>
-  <option value="A13">1I IM</option>
-  <option value="A14">1J IM</option>
-  <option value="A15">2A IM</option>
-  <option value="A16">2B IM</option>
-  <option value="A17">2C IM</option>
-  <option value="A18">2D IM</option>
-  <option value="A19">2E IM</option>
-  <option value="A20">2F IM</option>
-  <option value="A21">2G IM</option>
-  <option value="A22">2H IM</option>
-  <option value="A23">2I IM</option>
-  <option value="A24">3A IM</option>
-  <option value="A25">3B IM</option>
-  <option value="A26">3C IM</option>
-  <option value="A27">3D IM</option>
-  <option value="A28">3E IM</option>
-  <option value="A29">3F IM</option>
-  <option value="A30">3G IM</option>
-  <option value="A31">3H IM</option>
-  <option value="A32">3I IM</option>
+  <option value="A1">ONLINE</option>
   </select>
 
     <div style="margin-top:10px; display:flex; justify-content:space-between; gap:8px;">
@@ -2459,12 +2428,7 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
     </style>
 
     <!-- Bullet list cakep -->
-    <ul class="juz-list"><li>Semester 1: <strong>8</strong> Juz</li>
-      <li>Semester 2: <strong>5</strong> Juz</li>
-      <li>Semester 3: <strong>5</strong> Juz</li>
-      <li>Semester 4: <strong>5</strong> Juz</li>
-      <li>Semester 5: <strong>5</strong> Juz</li>
-      <li>Semester 6: <strong>2</strong> Juz</li></ul>
+    <ul class="juz-list"><li>Keterangan: <strong>Setiap level adalah 1 juz</strong></li></ul>
 
     <hr style="border:none; border-top:1px solid #eee; margin:8px 0 12px;">
 
@@ -2693,12 +2657,7 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
       #murRangeOverlay .juz-list strong{ font-variant-numeric:tabular-nums; }
     </style>
 
-    <ul class="juz-list"><li>Semester 1: <strong>8</strong> Juz</li>
-      <li>Semester 2: <strong>5</strong> Juz</li>
-      <li>Semester 3: <strong>5</strong> Juz</li>
-      <li>Semester 4: <strong>5</strong> Juz</li>
-      <li>Semester 5: <strong>5</strong> Juz</li>
-      <li>Semester 6: <strong>2</strong> Juz</li></ul>
+    <ul class="juz-list"><li>Keterangan: <strong>Setiap level adalah 1 juz</strong></li></ul>
 
     <hr style="border:none; border-top:1px solid #eee; margin:8px 0 12px;">
 
@@ -2743,35 +2702,9 @@ background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:cen
 
   // === Fungsi atur dropdown kelas ===
 function aturDropdownKelas(user) {
-  const semuaKelas = [  "kelas_012025","kelas_022025","kelas_032025","kelas_042025","kelas_052025","kelas_062025",
-    "kelas_072025","kelas_082025","kelas_092025","kelas_102025","kelas_112025","kelas_122025",
-    "kelas_132025","kelas_142025","kelas_152025","kelas_162025","kelas_172025","kelas_182025",
-    "kelas_192025","kelas_202025","kelas_212025","kelas_222025","kelas_232025","kelas_242025"];
+  const semuaKelas = [  "kelas_0120252026"];
 
-  const namaKelasCustom = {  kelas_012025: "Ust. Tukimin Abu Rasyid BA",
-  kelas_022025: "Ust. Dicky Miswardi BA",
-  kelas_032025: "Ust. Jundullah BA",
-  kelas_042025: "Ust. Abdullah",
-  kelas_052025: "Ust. Ro'uuf Noor Huda Su'udin S.Pd",
-  kelas_062025: "Ust. Salahuddin Santoaji S.T.P",
-  kelas_072025: "Ust. Hammam Ahmed Saleh",
-  kelas_082025: "Ust. Alif Rafiqul",
-  kelas_092025: "Ust. Ali Wardana S.Pd",
-  kelas_102025: "Ust. Mullah Muhammad Umar",
-  kelas_112025: "Ust. Akhsani Tawqim SE",
-  kelas_122025: "Ust. Ikhsan Nur Khamid",
-  kelas_132025: "Ust. Abdul Haq",
-  kelas_142025: "Ust. Abdullah Al Guspari",
-  kelas_152025: "Ust. Abdullah Rafi",
-  kelas_162025: "Ust. Fajrul Ihsan",
-  kelas_172025: "Ust. Idris",
-  kelas_182025: "Ust. Muhammad Athayya Mumtaz",
-  kelas_192025: "Ust. M. Hanan Azizi",
-  kelas_202025: "Ust. Muhammad Rama Miayasin",
-  kelas_212025: "Ust. Nur Afiq",
-  kelas_222025: "Ust. Raditya Baswara Raharjo",
-  kelas_232025: "Ust. Rafie Zahran Kurniawan",
-  kelas_242025: "Ust. Shidiq Hasan Khan"};
+  const namaKelasCustom = {  kelas_0120252026: "Ustadzah Muhimmatul Aulia, Nadziro, Nani, Fatia, Zulikha, Dewi Masrufah"};
 
   kelasSelect.innerHTML = "";
 
@@ -7913,7 +7846,7 @@ async function hitungTotalAllJuzFromTable() {
       rekap[key].totalJuz += readTotalJuz(item);
     });
 
-    const batasSemester = {1: 8, 2: 13, 3: 18, 4: 23, 5: 28, 6: 30};
+    const batasSemester = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30};
     const defaultTarget = 30;
 
     const dataToSave = [];
@@ -8060,7 +7993,7 @@ async function hitungTotalAllJuzOtomatis() {
       rekap[key].totalJuz += readTotalJuz(item);
     });
 
-    const batasSemester = {1: 8, 2: 13, 3: 18, 4: 23, 5: 28, 6: 30};
+    const batasSemester = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, 11: 11, 12: 12, 13: 13, 14: 14, 15: 15, 16: 16, 17: 17, 18: 18, 19: 19, 20: 20, 21: 21, 22: 22, 23: 23, 24: 24, 25: 25, 26: 26, 27: 27, 28: 28, 29: 29, 30: 30};
     const defaultTarget = 30;
 
     rowsArr.forEach(row => {
@@ -10068,7 +10001,7 @@ function renderSessionHTML(s){
 
 <script>
   // ====== KONFIG (opsional dari window.*) ======
-  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 32);             // 34 default; 0 = tanpa batas atas
+  const JENJANG_MAX = Number(window.JENJANG_MAX ?? 1);             // 34 default; 0 = tanpa batas atas
   const JENJANG_SAFETY_CAP = Number(window.JENJANG_SAFETY_CAP ?? 1000); // darurat bila tanpa batas
 
   // ====== Helper jenjang dinamis ======
